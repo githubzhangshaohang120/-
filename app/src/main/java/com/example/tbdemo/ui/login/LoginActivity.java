@@ -68,6 +68,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         showToast("服气");
 
     }
+    //SSH keys and GPG keys
 
     public void passchecke(){
         //boolean remPas = MyApp.getShared().getBoolean("remPas", true);
