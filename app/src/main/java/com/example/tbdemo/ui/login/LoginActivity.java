@@ -65,7 +65,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     @Override
     public void initView(View view) {
-
+        showToast("服气");
     }
 
     public void passchecke(){
