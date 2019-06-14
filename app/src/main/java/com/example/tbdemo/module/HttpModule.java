@@ -3,6 +3,7 @@ package com.example.tbdemo.module;
 import com.example.tbdemo.api.Api;
 import com.example.tbdemo.api.ApiService;
 import com.example.tbdemo.api.LoginApi;
+import com.example.tbdemo.api.RegisterApi;
 import com.example.tbdemo.module.interceptor.MyInterceptor;
 
 import java.util.concurrent.TimeUnit;
@@ -53,5 +54,18 @@ public class HttpModule {
 
     ApiService apiService = retrofit.create(ApiService.class);
     return LoginApi.getLoginApi(apiService);
+    }
+
+    @Provides
+    RegisterApi provideRegisterApi(OkHttpClient.Builder builder){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Api.RegisterUrl)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(builder.build())
+                .build();
+        ApiService apiService = retrofit.create(ApiService.class);
+        return RegisterApi.getRegisterApi(apiService);
     }
 }

@@ -1,10 +1,10 @@
-package com.example.tbdemo.ui.login.presenter;
+package com.example.tbdemo.ui.register.presenter;
 
 import com.example.tbdemo.api.LoginApi;
-import com.example.tbdemo.base.BaseContract;
+import com.example.tbdemo.api.RegisterApi;
 import com.example.tbdemo.base.BasePresenter;
-import com.example.tbdemo.bean.LoginBean;
-import com.example.tbdemo.ui.login.contract.LoginContract;
+import com.example.tbdemo.bean.RegisterBean;
+import com.example.tbdemo.ui.register.contract.RegisterContract;
 
 import javax.inject.Inject;
 
@@ -13,30 +13,30 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.presenter {
+public class RegisterPresenter extends BasePresenter<RegisterContract.View> implements RegisterContract.presenter {
 
-    protected LoginApi loginApi;
+    protected RegisterApi registerApi;
 
     @Inject
-    public LoginPresenter(LoginApi loginApi){
-        this.loginApi = loginApi;
+    public RegisterPresenter(RegisterApi registerApi){
+            this.registerApi = registerApi;
     }
 
     @Override
-    public void login(String phone, String pwd) {
-        loginApi.login(phone, pwd)
+    public void register(String phone, String pwd) {
+        RegisterApi.register(phone,pwd)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Observer<LoginBean>() {
+                .subscribe(new Observer<RegisterBean>() {
                     @Override
                     public void onSubscribe(Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(LoginBean loginBean) {
+                    public void onNext(RegisterBean registerBean) {
                             if (mView !=null){
-                                mView.loginSuccess(loginBean);
+                                mView.RegisterSuccess(registerBean);
                             }
                     }
 
@@ -50,6 +50,5 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
                     }
                 });
-
     }
 }

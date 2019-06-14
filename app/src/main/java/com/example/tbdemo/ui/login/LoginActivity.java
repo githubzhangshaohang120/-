@@ -25,6 +25,8 @@ import com.example.tbdemo.ui.login.presenter.LoginPresenter;
 import com.example.tbdemo.ui.register.RegisterActivity;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.View {
@@ -42,6 +44,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @BindView(R.id.btn_login)
     Button mBtnLogin;
     boolean isShowHidden = false;
+    private Unbinder bind;
 
 
     @Override
@@ -60,7 +63,9 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bind = ButterKnife.bind(this);
         passchecke();
+
     }
 
     @Override
@@ -175,7 +180,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             showToast(loginBean.getMessage());
             intent(MainActivity.class);
         }else {
-            showToast("登录失败");
+            showToast(loginBean.getMessage());
         }
 
     }
@@ -194,5 +199,14 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         }
 
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (bind != null) {
+            bind.unbind();
+            bind = null;
+        }
     }
 }

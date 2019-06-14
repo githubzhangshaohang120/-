@@ -1,13 +1,14 @@
 package com.example.tbdemo.api;
 
 import com.example.tbdemo.bean.LoginBean;
+import com.example.tbdemo.bean.RegisterBean;
 
 import io.reactivex.Observable;
 
 public class LoginApi {
 
     private static LoginApi loginApi;
-    private ApiService apiService;
+    private static ApiService apiService;
 
     private LoginApi (ApiService apiService){
         this.apiService = apiService;
@@ -28,8 +29,12 @@ public class LoginApi {
         return loginApi;
     }
 
-    public Observable<LoginBean> login(String phone,String pwd){
+    public static Observable<LoginBean> login(String phone,String pwd){
         return apiService.login(phone, pwd);
     }
+
+
+
+
 
 }

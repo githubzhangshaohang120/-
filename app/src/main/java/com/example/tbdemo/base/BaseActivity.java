@@ -1,5 +1,6 @@
 package com.example.tbdemo.base;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,12 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.Toast;
-
 import com.example.tbdemo.inter.IBase;
-import com.example.tbdemo.ui.login.LoginActivity;
-
 import javax.inject.Inject;
-
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -125,5 +122,7 @@ public abstract class BaseActivity<T extends BaseContract.BasePresenter> extends
         mLoadDialog.cancel();
 
     }
+
+
 
 }
