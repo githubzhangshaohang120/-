@@ -66,9 +66,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     @Override
     public void initView(View view) {
         showToast("服气");
+
     }
 
     public void passchecke(){
+        //boolean remPas = MyApp.getShared().getBoolean("remPas", true);
         boolean remPas = MyApp.getShared().getBoolean("remPas", true);
         if (remPas){
             mBoxPass.setChecked(true);
