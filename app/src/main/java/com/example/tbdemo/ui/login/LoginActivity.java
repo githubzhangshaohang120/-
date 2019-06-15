@@ -23,6 +23,7 @@ import com.example.tbdemo.module.HttpModule;
 import com.example.tbdemo.ui.login.contract.LoginContract;
 import com.example.tbdemo.ui.login.presenter.LoginPresenter;
 import com.example.tbdemo.ui.register.RegisterActivity;
+import com.example.tbdemo.util.MD5Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -76,7 +77,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     //SSH keys and GPG keys
 
     public void passchecke(){
-        //boolean remPas = MyApp.getShared().getBoolean("remPas", true);
         boolean remPas = MyApp.getShared().getBoolean("remPas", true);
         if (remPas){
             mBoxPass.setChecked(true);
@@ -169,7 +169,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 MyApp.getShared().edit().putString("m", phone).putString("p", pwd).commit();
             }
             showLoad();
+            /**
+             * MD5加密
+             */
+            //mPresenter.login(phone, MD5Utils.md5(pwd));
             mPresenter.login(phone,pwd);
+
         }
     }
     @Override

@@ -1,18 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="54dp"
+        android:layout_alignParentTop="true"
+        android:layout_above="@+id/group"
+        android:layout_alignParentBottom="true"
+        >
 
-</android.support.constraint.ConstraintLayout>
+    </FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/group"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="85dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
+        android:background="@mipmap/rectangle"
+        >
+
+
+        <RadioButton
+            android:id="@+id/home_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:checked="true"
+            android:paddingTop="10dp"
+            android:layout_marginTop="35dp"
+            android:drawableTop="@drawable/common_tab_btn_home"
+            />
+        <RadioButton
+            android:id="@+id/circle_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@drawable/common_tab_btn_circle"
+            android:paddingTop="10dp"
+            android:layout_marginTop="35dp"/>
+        <RadioButton
+            android:id="@+id/shaopping_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:paddingTop="10dp"
+            android:drawableTop="@drawable/commom_tab_btn_shopping_cart_n_hdpi"
+            />
+        <RadioButton
+            android:id="@+id/list_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:paddingTop="10dp"
+            android:layout_marginTop="35dp"
+            android:drawableTop="@drawable/common_tab_btn_list"/>
+        <RadioButton
+            android:id="@+id/my_btn"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:paddingTop="10dp"
+            android:layout_marginTop="35dp"
+            android:drawableTop="@drawable/common_tab_btn_my"/>
+    </RadioGroup>
+
+</RelativeLayout>
