@@ -4,12 +4,16 @@ import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.Toast;
+
+import com.example.tbdemo.app.App;
 import com.example.tbdemo.inter.IBase;
 import javax.inject.Inject;
 import butterknife.ButterKnife;
@@ -27,14 +31,13 @@ public abstract class BaseActivity<T extends BaseContract.BasePresenter> extends
         super.onCreate(savedInstanceState);
         setContentView(getContentLayout());
         bind = ButterKnife.bind(this);
-
         inject();
         if (mPresenter !=null){
             mPresenter.attchView(this);
         }
 
-
     }
+
 
     @Override
     protected void onDestroy() {
@@ -49,13 +52,11 @@ public abstract class BaseActivity<T extends BaseContract.BasePresenter> extends
 
         //System.gc();
     }
-    @Override
     public void intent(Class mActivity){
         Intent intent = new Intent(this,mActivity);
         startActivity(intent);
     }
 
-    @Override
     public void intent(Class mActivity, Bundle bundle){
         Intent intent = new Intent(this,mActivity);
         intent.putExtras(bundle);
@@ -94,7 +95,6 @@ public abstract class BaseActivity<T extends BaseContract.BasePresenter> extends
     /**
      *初始化加载框
      */
-    @Override
     public void showLoad() {
         // 加载框
         mLoadDialog = new ProgressDialog(this);
@@ -123,6 +123,12 @@ public abstract class BaseActivity<T extends BaseContract.BasePresenter> extends
 
     }
 
+    protected void getUid(){
 
+    }
+
+    protected void getsessionid(){
+
+    }
 
 }

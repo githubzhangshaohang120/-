@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.tbdemo.MainActivity;
 import com.example.tbdemo.R;
-import com.example.tbdemo.app.MyApp;
+import com.example.tbdemo.app.App;
 import com.example.tbdemo.base.BaseActivity;
 import com.example.tbdemo.bean.LoginBean;
 import com.example.tbdemo.httpcompoent.DaggerHttpCompoent;
@@ -23,7 +23,7 @@ import com.example.tbdemo.module.HttpModule;
 import com.example.tbdemo.ui.login.contract.LoginContract;
 import com.example.tbdemo.ui.login.presenter.LoginPresenter;
 import com.example.tbdemo.ui.register.RegisterActivity;
-import com.example.tbdemo.util.MD5Utils;
+import com.example.tbdemo.util.SharedPreferencesUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,6 +62,11 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     }
 
     @Override
+    public void initView(View view) {
+
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         bind = ButterKnife.bind(this);
@@ -69,19 +74,12 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
     }
 
-    @Override
-    public void initView(View view) {
-        showToast("服气");
-
-    }
-    //SSH keys and GPG keys
-
     public void passchecke(){
-        boolean remPas = MyApp.getShared().getBoolean("remPas", true);
+        boolean remPas = App.getShared().getBoolean("remPas", true);
         if (remPas){
             mBoxPass.setChecked(true);
-            mEditPhone.setText(MyApp.getShared().getString("m",""));
-            mEditPwd.setText(MyApp.getShared().getString("p",""));
+            mEditPhone.setText(App.getShared().getString("m",""));
+            mEditPwd.setText(App.getShared().getString("p",""));
         }
         if (!EasyPermissions.hasPermissions(this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -130,7 +128,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
 
 
 
-        MyApp.getShared().edit().putBoolean("remPas",mBoxPass.isChecked()).commit();
+        App.getShared().edit().putBoolean("remPas",mBoxPass.isChecked()).commit();
 
 
     }
@@ -166,7 +164,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
                 return;
             }
             if (mBoxPass.isChecked()) {
-                MyApp.getShared().edit().putString("m", phone).putString("p", pwd).commit();
+                App.getShared().edit().putString("m", phone).putString("p", pwd).commit();
             }
             showLoad();
             /**
@@ -182,6 +180,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
         dismissLoding();
         String status = loginBean.getStatus();
         if (status.equals("0000")){
+            SharedPreferencesUtils.setParam(this,"userId",loginBean.getResult().getUserId() + " ");
+            SharedPreferencesUtils.setParam(this,"username",loginBean.getResult().getNickName() + " ");
+            SharedPreferencesUtils.setParam(this,"iconUrl",loginBean.getResult().getHeadPic() + " ");
+            SharedPreferencesUtils.setParam(this,"sessionId",loginBean.getResult().getSessionId() + " ");
             showToast(loginBean.getMessage());
             intent(MainActivity.class);
         }else {

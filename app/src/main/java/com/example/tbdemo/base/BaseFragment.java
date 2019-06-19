@@ -2,6 +2,7 @@ package com.example.tbdemo.base;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -46,12 +47,12 @@ public abstract class BaseFragment<T extends BaseContract.BasePresenter> extends
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(getContentLayout(), null);
-
-        bind = ButterKnife.bind(getActivity(),view);
+        bind = ButterKnife.bind(this,view);
         initView(view);
-
         return view;
     }
+
+
 
     @Override
     public int getContentLayout() {
@@ -71,13 +72,11 @@ public abstract class BaseFragment<T extends BaseContract.BasePresenter> extends
 
         //System.gc();
     }
-    @Override
     public void intent(Class mActivity){
         Intent intent = new Intent(getContext(),mActivity);
         startActivity(intent);
     }
 
-    @Override
     public void intent(Class mActivity, Bundle bundle){
         Intent intent = new Intent(getContext(),mActivity);
         intent.putExtras(bundle);
@@ -116,7 +115,6 @@ public abstract class BaseFragment<T extends BaseContract.BasePresenter> extends
     /**
      *初始化加载框
      */
-    @Override
     public void showLoad() {
         // 加载框
         mLoadDialog = new ProgressDialog(getContext());
@@ -146,5 +144,5 @@ public abstract class BaseFragment<T extends BaseContract.BasePresenter> extends
     }
 
 
-
+    public abstract void initView(View view);
 }

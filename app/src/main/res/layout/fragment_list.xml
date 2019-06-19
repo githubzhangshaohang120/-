@@ -3,4 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="List"
+        android:gravity="center"
+        android:textSize="100dp"/>
 </LinearLayout>

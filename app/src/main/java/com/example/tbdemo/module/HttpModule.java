@@ -2,6 +2,7 @@ package com.example.tbdemo.module;
 
 import com.example.tbdemo.api.Api;
 import com.example.tbdemo.api.ApiService;
+import com.example.tbdemo.api.CartApi;
 import com.example.tbdemo.api.LoginApi;
 import com.example.tbdemo.api.RegisterApi;
 import com.example.tbdemo.module.interceptor.MyInterceptor;
@@ -67,5 +68,18 @@ public class HttpModule {
                 .build();
         ApiService apiService = retrofit.create(ApiService.class);
         return RegisterApi.getRegisterApi(apiService);
+    }
+
+    @Provides
+    CartApi provideCartApi(OkHttpClient.Builder builder){
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(Api.Query_shopping_cartUrl)
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(builder.build())
+                .build();
+        ApiService apiService = retrofit.create(ApiService.class);
+        return CartApi.getCartApi(apiService);
     }
 }

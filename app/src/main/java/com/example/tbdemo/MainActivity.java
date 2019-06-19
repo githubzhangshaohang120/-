@@ -1,23 +1,18 @@
 package com.example.tbdemo;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.tbdemo.base.BaseActivity;
-import com.example.tbdemo.base.BaseFragment;
-import com.example.tbdemo.ui.fragment.CircleFragment;
-import com.example.tbdemo.ui.fragment.HomeFragment;
-import com.example.tbdemo.ui.fragment.ListFragment;
-import com.example.tbdemo.ui.fragment.MyFragment;
-import com.example.tbdemo.ui.fragment.ShoppingFragment;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.example.tbdemo.ui.fragment.circlefragment.CircleFragment;
+import com.example.tbdemo.ui.fragment.homefragment.HomeFragment;
+import com.example.tbdemo.ui.fragment.listfragment.ListFragment;
+import com.example.tbdemo.ui.fragment.myfragment.MyFragment;
+import com.example.tbdemo.ui.fragment.shoppingfragment.ShoppingFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,20 +38,23 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private ShoppingFragment shoppingFragment;
     private ListFragment listFragment;
     private MyFragment myFragment;
-
-    private int position;
-    Fragment[] fragments;
+    private int currentIndex=1;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getContentLayout());
         ButterKnife.bind(this);
-    }
+        fragmentManager = getSupportFragmentManager();
+         homeFragment = new HomeFragment();
+         circleFragment = new CircleFragment();
+         shoppingFragment = new ShoppingFragment();
+         listFragment = new ListFragment();
+         myFragment = new MyFragment();
+        fragmentManager.beginTransaction().replace(R.id.frame,homeFragment).commit();
+        home_btn.setChecked(true);
+        group.setOnCheckedChangeListener(this);
 
-
-    @Override
-    public void dismissLoding() {
 
     }
 
@@ -73,71 +71,49 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     @Override
     public void initView(View view) {
 
-        fragments = new Fragment[]{
-                //主页、新闻、图片、视频、个人
-                new HomeFragment(),
-                new CircleFragment(),
-                new ShoppingFragment(),
-                new ListFragment(),
-                new MyFragment()
-
-        };
-
-
-
-        group.setOnCheckedChangeListener(this);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        //设置默认选中框架页面
-        //group.check(R.id.home_btn);
-        transaction.add(R.id.home_btn,fragments[0]).commit();
-
     }
-
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
+
         switch (checkedId){
             case R.id.home_btn:
-                setIndexSelected(0);
+                if (currentIndex ==1 ){
+                    return;
+                }
+                currentIndex = 1;
+                fragmentManager.beginTransaction().replace(R.id.frame,homeFragment).commit();
                 break;
             case R.id.circle_btn:
-                setIndexSelected(1);
+                if (currentIndex == 2 ){
+                    return;
+                }
+                currentIndex = 2;
+                fragmentManager.beginTransaction().replace(R.id.frame,circleFragment).commit();
                 break;
             case R.id.shaopping_btn:
-                setIndexSelected(2);
+                if (currentIndex ==3 ){
+                    return;
+                }
+                currentIndex = 3;
+                fragmentManager.beginTransaction().replace(R.id.frame,shoppingFragment).commit();
                 break;
             case R.id.list_btn:
-                setIndexSelected(3);
+                if (currentIndex ==4 ){
+                    return;
+                }
+                currentIndex = 4;
+                fragmentManager.beginTransaction().replace(R.id.frame,listFragment).commit();
                 break;
             case R.id.my_btn:
-                setIndexSelected(4);
+                if (currentIndex ==5 ){
+                    return;
+                }
+                currentIndex = 5;
+                fragmentManager.beginTransaction().replace(R.id.frame,myFragment).commit();
                 break;
         }
     }
-
-    // 设置fragment界面
-    private void setIndexSelected(int index) {
-        if (position == index){
-            return;
-        }
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-        //隐藏当前的fragment
-        transaction.hide(fragments[position]);
-
-        //判断fragment是否已经添加
-        if (!fragments[index].isAdded()){
-            transaction.add(R.id.home_btn,fragments[index]).show(fragments[index]);
-        }else {
-            //显示新的fragment
-            transaction.show(fragments[index]);
-        }
-
-        transaction.commit();
-        position =index;
-    }
-
 
 
 }

@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 
-public class MyApp extends Application {
+public class App extends Application {
 
 
     private static SharedPreferences sharedPreferences;
