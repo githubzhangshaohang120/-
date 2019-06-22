@@ -6,6 +6,8 @@ import com.example.tbdemo.base.BasePresenter;
 import com.example.tbdemo.bean.LoginBean;
 import com.example.tbdemo.ui.login.contract.LoginContract;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import io.reactivex.Observer;
@@ -35,10 +37,14 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
                     @Override
                     public void onNext(LoginBean loginBean) {
-                            if (mView !=null){
-                                mView.loginSuccess(loginBean);
-                            }
+                        if (mView !=null){
+                            mView.loginSuccess(loginBean);
+                        }
                     }
+
+
+
+
 
                     @Override
                     public void onError(Throwable e) {

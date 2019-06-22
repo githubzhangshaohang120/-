@@ -1,32 +1,24 @@
-package com.example.tbdemo.ui.fragment.homefragment.homepresenter;
-
-import android.annotation.SuppressLint;
+package com.example.tbdemo.ui.fragment.shoppingfragment.shoppingpresenter;
 
 import com.example.tbdemo.api.CartApi;
 import com.example.tbdemo.base.BasePresenter;
 import com.example.tbdemo.bean.CartBean;
 import com.example.tbdemo.ui.fragment.homefragment.homecontract.HomeContract;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import com.example.tbdemo.ui.fragment.shoppingfragment.shoppingcontract.ShoppingContract;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
-public class HomePresenter extends BasePresenter<HomeContract.View> implements HomeContract.prsenter {
+public class ShoppingPresenter extends BasePresenter<ShoppingContract.View> implements ShoppingContract.prsenter {
 
 
     private CartApi cartApi;
 
     @Inject
-    public HomePresenter(CartApi cartApi){
+    public ShoppingPresenter(CartApi cartApi){
         this.cartApi = cartApi;
     }
 
@@ -40,7 +32,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
                     @Override
                     public void accept(CartBean cartBean) throws Exception {
                         if (mView !=null){
-                            mView.HomeSuccess(cartBean);
+                            mView.ShoppingSuccess(cartBean);
                         }
                     }
                 });

@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.example.tbdemo.R;
 import com.example.tbdemo.inter.IBase;
+import com.example.tbdemo.util.SharedPreferencesUtils;
+
 import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -70,7 +72,7 @@ public abstract class BaseFragment<T extends BaseContract.BasePresenter> extends
             bind = null;
         }
 
-        //System.gc();
+        System.gc();
     }
     public void intent(Class mActivity){
         Intent intent = new Intent(getContext(),mActivity);
@@ -142,7 +144,14 @@ public abstract class BaseFragment<T extends BaseContract.BasePresenter> extends
         mLoadDialog.cancel();
 
     }
+    public String getUserId(){
+        return (String) SharedPreferencesUtils.getParam(getContext(), "userId", "");
+
+    }
+
+    public String getSessionId(){
+        return (String) SharedPreferencesUtils.getParam(getContext(), "sessionId", "");
+    }
 
 
-    public abstract void initView(View view);
 }

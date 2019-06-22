@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -18,11 +19,14 @@ import com.example.tbdemo.R;
 import com.example.tbdemo.app.App;
 import com.example.tbdemo.base.BaseActivity;
 import com.example.tbdemo.bean.LoginBean;
+import com.example.tbdemo.greendao.DaoMaster;
+import com.example.tbdemo.greendao.UserBeanDao;
 import com.example.tbdemo.httpcompoent.DaggerHttpCompoent;
 import com.example.tbdemo.module.HttpModule;
 import com.example.tbdemo.ui.login.contract.LoginContract;
 import com.example.tbdemo.ui.login.presenter.LoginPresenter;
 import com.example.tbdemo.ui.register.RegisterActivity;
+import com.example.tbdemo.util.GreenDaoUtils;
 import com.example.tbdemo.util.SharedPreferencesUtils;
 
 import butterknife.BindView;
@@ -184,6 +188,10 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             SharedPreferencesUtils.setParam(this,"username",loginBean.getResult().getNickName() + " ");
             SharedPreferencesUtils.setParam(this,"iconUrl",loginBean.getResult().getHeadPic() + " ");
             SharedPreferencesUtils.setParam(this,"sessionId",loginBean.getResult().getSessionId() + " ");
+            UserBeanDao userBeanDao = DaoMaster.newDevSession(getBaseContext(), UserBeanDao.TABLENAME).getUserBeanDao();
+            LoginBean.ResultBean result = loginBean.getResult();
+            result.setStatus("0000");
+            userBeanDao.insertOrReplace(result);
             showToast(loginBean.getMessage());
             intent(MainActivity.class);
         }else {

@@ -35,8 +35,8 @@ public class CartApi {
     }
 
 
-    public static   Observable<CartBean>  cart(String userId,String sessionId){
-       return apiService.cart(userId, sessionId);
+    public Observable<CartBean>  getCatagory(String userId,String sessionId){
+       return apiService.getCart(userId, sessionId);
     }
 
 

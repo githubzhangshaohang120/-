@@ -1,8 +1,9 @@
 package com.example.tbdemo.ui.login.contract;
 
-import com.example.tbdemo.api.LoginApi;
 import com.example.tbdemo.base.BaseContract;
 import com.example.tbdemo.bean.LoginBean;
+
+import java.util.List;
 
 public interface LoginContract {
 

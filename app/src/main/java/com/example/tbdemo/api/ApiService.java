@@ -26,6 +26,6 @@ public interface ApiService {
     Observable<RegisterBean> register(@Field("phone")String phone, @Field("pwd")String pwd);
     @FormUrlEncoded
     @POST("small/order/verify/v1/findShoppingCart")
-    Observable<CartBean> cart(@Field("userId") String userId,@Field("sessionId") String sessionId);
+    Observable<CartBean> getCart(@Field("userId") String userId,@Field("sessionId") String sessionId);
 
 }

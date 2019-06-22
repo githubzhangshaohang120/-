@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.example.tbdemo.app.App;
 import com.example.tbdemo.inter.IBase;
+import com.example.tbdemo.util.SharedPreferencesUtils;
+
 import javax.inject.Inject;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -123,12 +125,13 @@ public abstract class BaseActivity<T extends BaseContract.BasePresenter> extends
 
     }
 
-    protected void getUid(){
+    public String getUserId(){
+        return (String) SharedPreferencesUtils.getParam(this, "userId", "");
 
     }
 
-    protected void getsessionid(){
-
+    public String getSessionId(){
+        return (String) SharedPreferencesUtils.getParam(this, "sessionId", "");
     }
 
 }

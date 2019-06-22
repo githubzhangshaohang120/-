@@ -10,9 +10,9 @@ public class CartBean {
      * status : 0000
      */
 
-    private String message;
-    private String status;
-    private List<Result> result;
+    public String message;
+    public String status;
+    public List<Result> result;
 
 
     /**

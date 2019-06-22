@@ -1,8 +1,11 @@
 package com.example.tbdemo.bean;
 
+import org.greenrobot.greendao.annotation.Entity;
+
 public class LoginBean {
 
 
+    public static Object ResultBean;
     /**
      * result : {"headPic":"http://mobile.bwstudent.com/images/small/default/user.jpg","nickName":"hd_83XQ6","phone":"13375747172","sessionId":"15602343015841134","sex":1,"userId":1134}
      * message : 登录成功
@@ -37,7 +40,7 @@ public class LoginBean {
         this.status = status;
     }
 
-    public static class ResultBean {
+    public static class ResultBean extends UserBean {
         /**
          * headPic : http://mobile.bwstudent.com/images/small/default/user.jpg
          * nickName : hd_83XQ6
@@ -46,7 +49,7 @@ public class LoginBean {
          * sex : 1
          * userId : 1134
          */
-
+        private String status;
         private String headPic;
         private String nickName;
         private String phone;
@@ -100,6 +103,13 @@ public class LoginBean {
 
         public void setUserId(int userId) {
             this.userId = userId;
+        }
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
         }
     }
 }

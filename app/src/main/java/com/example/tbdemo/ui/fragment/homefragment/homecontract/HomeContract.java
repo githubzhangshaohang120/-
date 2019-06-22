@@ -12,6 +12,6 @@ public interface HomeContract {
     }
 
     interface prsenter extends BaseContract.BasePresenter<View>{
-        void cart(String userId,String sessionId);
+        void getCart(String userId,String sessionId);
     }
 }
