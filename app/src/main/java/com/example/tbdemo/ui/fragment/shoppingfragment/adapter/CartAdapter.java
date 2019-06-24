@@ -3,6 +3,7 @@ package com.example.tbdemo.ui.fragment.shoppingfragment.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,6 @@ import android.widget.TextView;
 
 import com.example.tbdemo.R;
 import com.example.tbdemo.bean.CartBean;
-import com.example.tbdemo.ui.fragment.shoppingfragment.ShoppingFragment;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.util.List;
@@ -22,19 +22,23 @@ import butterknife.ButterKnife;
 public class CartAdapter extends XRecyclerView.Adapter<CartAdapter.MyHolder> {
 
     private Context context;
-    private List<CartBean.Result> list;
+    private List<CartBean.ResultBean> list;
     private LayoutInflater inflater;
     private notifyCart notifyCart;
-    public CartAdapter(Context context, List<CartBean.Result> result) {
+
+    public CartAdapter(Context context, List<CartBean.ResultBean> result) {
         this.context = context;
         this.list = result;
     }
 
 
-    public void setNotifyCart(Context notifyCart) {
-        this.context = notifyCart;
+    public void setNotifyCart(CartAdapter.notifyCart notifyCart) {
+        this.notifyCart = notifyCart;
     }
 
+    public List<CartBean.ResultBean> getCartList() {
+        return list;
+    }
 
     @NonNull
     @Override
@@ -46,9 +50,17 @@ public class CartAdapter extends XRecyclerView.Adapter<CartAdapter.MyHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final MyHolder myHolder, int i) {
-        CartBean.Result result = list.get(i);
+        CartBean.ResultBean result = list.get(i);
+
+        if (result.cartChecked) {
+            myHolder.checkbox_cart.setChecked(true);
+        } else {//未选中
+            myHolder.checkbox_cart.setChecked(false);
+        }
         myHolder.tv_name.setText(result.categoryName);
-        ProductAdapter productAdapter = new ProductAdapter(context,result.shoppingCartList);
+
+
+        ProductAdapter productAdapter = new ProductAdapter(context, result.shoppingCartList);
         myHolder.rv_product.setLayoutManager(new LinearLayoutManager(context));
         myHolder.rv_product.setAdapter(productAdapter);
         myHolder.checkbox_cart.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +77,6 @@ public class CartAdapter extends XRecyclerView.Adapter<CartAdapter.MyHolder> {
     }
 
 
-
     public class MyHolder extends XRecyclerView.ViewHolder {
         @BindView(R.id.checkbox_cart)
         CheckBox checkbox_cart;
@@ -73,13 +84,14 @@ public class CartAdapter extends XRecyclerView.Adapter<CartAdapter.MyHolder> {
         TextView tv_name;
         @BindView(R.id.rv_product)
         XRecyclerView rv_product;
+
         public MyHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
     }
 
-    public interface notifyCart{
+    public interface notifyCart {
         void isCheced(Boolean b);
     }
 

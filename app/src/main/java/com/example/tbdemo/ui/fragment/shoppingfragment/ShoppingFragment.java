@@ -1,5 +1,6 @@
 package com.example.tbdemo.ui.fragment.shoppingfragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,7 +19,6 @@ import com.example.tbdemo.greendao.CartDaoBeanDao;
 import com.example.tbdemo.httpcompoent.DaggerHttpCompoent;
 import com.example.tbdemo.module.HttpModule;
 import com.example.tbdemo.ui.fragment.shoppingfragment.adapter.CartAdapter;
-import com.example.tbdemo.ui.fragment.shoppingfragment.adapter.ProductAdapter;
 import com.example.tbdemo.ui.fragment.shoppingfragment.shoppingcontract.ShoppingContract;
 import com.example.tbdemo.ui.fragment.shoppingfragment.shoppingpresenter.ShoppingPresenter;
 import com.example.tbdemo.util.GreenDaoUtils;
@@ -30,10 +30,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnItemClick;
-import butterknife.OnItemLongClick;
 
-public class ShoppingFragment extends BaseFragment<ShoppingPresenter> implements ShoppingContract.View, XRecyclerView.LoadingListener {
+public class ShoppingFragment extends BaseFragment<ShoppingPresenter> implements ShoppingContract.View, XRecyclerView.LoadingListener, CartAdapter.notifyCart {
 
 
     @BindView(R.id.rv_cart)
@@ -45,7 +43,7 @@ public class ShoppingFragment extends BaseFragment<ShoppingPresenter> implements
     private View view;
     //private ProductAdapter productAdapter;
     private CartAdapter cartAdapter;
-
+    int posion = 1;
     @Override
     public int getContentLayout() {
         return R.layout.fragment_shopping;
@@ -74,14 +72,15 @@ public class ShoppingFragment extends BaseFragment<ShoppingPresenter> implements
         ButterKnife.bind(this, view);
         initView(view);
         initData();
-//        //mPresenter.cart("159", "1560906483344159");
-//        mPresenter.cart(userId,sessionId);
+
+        //mPresenter.cart(userId,sessionId);
         return view;
 
     }
 
     private void initData() {
-        mPresenter.getCart(getUserId(), getSessionId());
+        //mPresenter.getCart(getUserId(), getSessionId());
+        mPresenter.getCart("5139", "15611917392065139");
         CartDaoBeanDao cartDaoBeanDao = GreenDaoUtils.getInstance().getDaoSession().getCartDaoBeanDao();
         List<CartDaoBean> list = cartDaoBeanDao.queryBuilder().list();
         if (list !=null && list.size() >0){
@@ -108,7 +107,7 @@ public class ShoppingFragment extends BaseFragment<ShoppingPresenter> implements
      */
     private void fillData(CartBean cartBean) {
         cartAdapter = new CartAdapter(getContext(),cartBean.result);
-        cartAdapter.setNotifyCart(getContext());
+        cartAdapter.setNotifyCart(this);
         xRecyclerView.setAdapter(cartAdapter);
 
     }
@@ -116,11 +115,13 @@ public class ShoppingFragment extends BaseFragment<ShoppingPresenter> implements
 
     @Override
     public void onRefresh() {
+        posion = 1;
         xRecyclerView.refreshComplete();
     }
 
     @Override
     public void onLoadMore() {
+        posion++;
         xRecyclerView.loadMoreComplete();
     }
 
@@ -159,17 +160,60 @@ public class ShoppingFragment extends BaseFragment<ShoppingPresenter> implements
             case R.id.rv_cart:
                 break;
             case R.id.checkbox:
+                box();
                 break;
             case R.id.totalPrice:
                 break;
         }
     }
 
-    public  void onItemclick(int pos, View itemView, CartBean.Result.Product product){
+    private void box() {
+        if (checkbox.isChecked()){//全选的时候
+            for (CartBean.ResultBean resultBean : cartAdapter.getCartList()){
+                resultBean.cartChecked = true;//设置一级选中状态
+                for (CartBean.ResultBean.ShoppingCartListBean shoppingCartListBean : resultBean.shoppingCartList){
+                    shoppingCartListBean.productChecked = true;//设置二级选中状态
+                }
+            }
+            allPrice(true);
+        }else {
+            for (CartBean.ResultBean resultBean : cartAdapter.getCartList()){
+                resultBean.cartChecked = false;//设置一级选中状态
+                for (CartBean.ResultBean.ShoppingCartListBean shoppingCartListBean : resultBean.shoppingCartList){
+                    shoppingCartListBean.productChecked = false;//设置二级选中状态
+                }
+            }
+            allPrice(true);
+        }
+        cartAdapter.notifyDataSetChanged();
+    }
+
+    public  void onItemclick(int pos, View itemView, CartBean.ResultBean.ShoppingCartListBean product){
 
     }
 
     public  void OnItemLongClick(int pos, View itemView){
 
+    }
+
+    @Override
+    public void isCheced(Boolean b) {
+
+    }
+
+    private void allPrice(boolean b) {
+        double totalPrices = 0;
+        //遍历所有数据，得到价格汇总计算
+        for (CartBean.ResultBean result : cartAdapter.getCartList()) {
+
+            for (CartBean.ResultBean.ShoppingCartListBean product : result.shoppingCartList) {
+
+                totalPrices += Double.parseDouble(product.price + "");
+            }
+        }
+        if (!b){//未选中时
+            totalPrices = 0;
+        }
+        totalPrice.setText(totalPrices+"");//选牛时
     }
 }

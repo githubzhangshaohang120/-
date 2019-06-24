@@ -3,7 +3,6 @@ package com.example.tbdemo.ui.fragment.shoppingfragment.shoppingpresenter;
 import com.example.tbdemo.api.CartApi;
 import com.example.tbdemo.base.BasePresenter;
 import com.example.tbdemo.bean.CartBean;
-import com.example.tbdemo.ui.fragment.homefragment.homecontract.HomeContract;
 import com.example.tbdemo.ui.fragment.shoppingfragment.shoppingcontract.ShoppingContract;
 
 import javax.inject.Inject;

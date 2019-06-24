@@ -1,9 +1,6 @@
 package com.example.tbdemo.api;
 
 import com.example.tbdemo.bean.CartBean;
-import com.example.tbdemo.bean.RegisterBean;
-
-import java.util.HashMap;
 
 import io.reactivex.Observable;
 
@@ -35,7 +32,7 @@ public class CartApi {
     }
 
 
-    public Observable<CartBean>  getCatagory(String userId,String sessionId){
+    public Observable<CartBean>  getCatagory(String userId, String sessionId){
        return apiService.getCart(userId, sessionId);
     }
 
