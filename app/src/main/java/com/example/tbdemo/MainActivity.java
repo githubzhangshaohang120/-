@@ -1,13 +1,20 @@
 package com.example.tbdemo;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.example.tbdemo.base.BaseActivity;
+import com.example.tbdemo.jpsh.ExampleUtil;
 import com.example.tbdemo.ui.fragment.circlefragment.CircleFragment;
 import com.example.tbdemo.ui.fragment.homefragment.HomeFragment;
 import com.example.tbdemo.ui.fragment.listfragment.ListFragment;
@@ -16,6 +23,7 @@ import com.example.tbdemo.ui.fragment.shoppingfragment.ShoppingFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.jpush.android.api.JPushInterface;
 
 public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
 
@@ -40,11 +48,19 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     private MyFragment myFragment;
     private int currentIndex=1;
     private FragmentManager fragmentManager;
+    public static boolean isForeground = false;
+    private MessageReceiver mMessageReceiver;
+    public static final String MESSAGE_RECEIVED_ACTION = "com.example.jpushdemo.MESSAGE_RECEIVED_ACTION";
+    public static final String KEY_TITLE = "title";
+    public static final String KEY_MESSAGE = "message";
+    public static final String KEY_EXTRAS = "extras";
+    private EditText msgText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        registerMessageReceiver();
         fragmentManager = getSupportFragmentManager();
          homeFragment = new HomeFragment();
          circleFragment = new CircleFragment();
@@ -54,8 +70,36 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         fragmentManager.beginTransaction().replace(R.id.frame,homeFragment).commit();
         home_btn.setChecked(true);
         group.setOnCheckedChangeListener(this);
+        msgText = (EditText)findViewById(R.id.msg_rec);
 
+    }
 
+    private void registerMessageReceiver() {
+        mMessageReceiver = new MessageReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
+        filter.addAction(MESSAGE_RECEIVED_ACTION);
+        LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
+    }
+
+    public class MessageReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                if (MESSAGE_RECEIVED_ACTION.equals(intent.getAction())) {
+                    String messge = intent.getStringExtra(KEY_MESSAGE);
+                    String extras = intent.getStringExtra(KEY_EXTRAS);
+                    StringBuilder showMsg = new StringBuilder();
+                    showMsg.append(KEY_MESSAGE + " : " + messge + "\n");
+                    if (!ExampleUtil.isEmpty(extras)) {
+                        showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
+                    }
+                    setCostomMsg(showMsg.toString());
+                }
+            } catch (Exception e){
+            }
+        }
     }
 
     @Override
@@ -115,5 +159,35 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         }
     }
 
+    // 初始化 JPush。如果已经初始化，但没有登录成功，则执行重新登录。
+    private void init(){
+        JPushInterface.init(getApplicationContext());
+    }
 
+    private void setCostomMsg(String msg){
+        if (null != msgText) {
+            msgText.setText(msg);
+            msgText.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        isForeground = true;
+        super.onResume();
+    }
+
+
+    @Override
+    protected void onPause() {
+        isForeground = false;
+        super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(mMessageReceiver);
+        super.onDestroy();
+
+    }
 }

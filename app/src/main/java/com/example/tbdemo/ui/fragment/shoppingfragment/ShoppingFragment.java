@@ -77,10 +77,10 @@ public class ShoppingFragment extends BaseFragment<ShoppingPresenter> implements
         return view;
 
     }
-
+//    mPresenter.getCart("5139", "15611917392065139");
     private void initData() {
-        //mPresenter.getCart(getUserId(), getSessionId());
-        mPresenter.getCart("5139", "15611917392065139");
+        mPresenter.getCart(getUserId(), getSessionId());
+//
         CartDaoBeanDao cartDaoBeanDao = GreenDaoUtils.getInstance().getDaoSession().getCartDaoBeanDao();
         List<CartDaoBean> list = cartDaoBeanDao.queryBuilder().list();
         if (list !=null && list.size() >0){

@@ -11,10 +11,13 @@ import com.example.tbdemo.util.GreenDaoUtils;
 
 import org.greenrobot.greendao.database.Database;
 
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.helper.Logger;
+
 
 public class App extends Application {
 
-
+    private static final String TAG = "JIGUANG-Example";
     private static SharedPreferences sharedPreferences;
 //    private static Context context;
 //    private static DaoSession daoSession;
@@ -25,11 +28,14 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
+        Logger.d(TAG, "[ExampleApplication] onCreate");
         super.onCreate();
         context = this;
         shared();
         //initgreendao();
         GreenDaoUtils.getInstance().init();//初始化
+        JPushInterface.setDebugMode(true);// 设置开启日志,发布时请关闭日志
+        JPushInterface.init(this);    		// 初始化 JPush
     }
 
 
